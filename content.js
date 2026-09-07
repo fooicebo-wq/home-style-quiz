@@ -1,6 +1,94 @@
 /* ============================================================
-   content.js — 由 admin.html 後台「匯出」產生的覆寫檔
-   目前是空的，測驗會使用 quiz-data.js 裡的預設插圖與文字。
-   在後台換好照片後，按「匯出 content.js」下載，覆蓋掉這個檔案即可。
+   content.js — 集思居家風格測驗 覆寫檔
+   選項圖由 Gemini (gemini-3-pro-image) 生成，存在 images/ 資料夾
+   每組 8 張共用同一個場景錨點，只換主體
+   要換成自己的照片：開 admin.html 直接覆蓋，或替換 images/ 裡的同名檔
    ============================================================ */
-window.GIS_CONTENT = null;
+window.GIS_CONTENT = {
+ "questions": {
+  "art": {
+   "options": [
+    {
+     "img": "images/art-1.jpg"
+    },
+    {
+     "img": "images/art-2.jpg"
+    },
+    {
+     "img": "images/art-3.jpg"
+    },
+    {
+     "img": "images/art-4.jpg"
+    },
+    {
+     "img": "images/art-5.jpg"
+    },
+    {
+     "img": "images/art-6.jpg"
+    },
+    {
+     "img": "images/art-7.jpg"
+    },
+    {
+     "img": "images/art-8.jpg"
+    }
+   ]
+  },
+  "chair": {
+   "options": [
+    {
+     "img": "images/chair-1.jpg"
+    },
+    {
+     "img": "images/chair-2.jpg"
+    },
+    {
+     "img": "images/chair-3.jpg"
+    },
+    {
+     "img": "images/chair-4.jpg"
+    },
+    {
+     "img": "images/chair-5.jpg"
+    },
+    {
+     "img": "images/chair-6.jpg"
+    },
+    {
+     "img": "images/chair-7.jpg"
+    },
+    {
+     "img": "images/chair-8.jpg"
+    }
+   ]
+  },
+  "vase": {
+   "options": [
+    {
+     "img": "images/vase-1.jpg"
+    },
+    {
+     "img": "images/vase-2.jpg"
+    },
+    {
+     "img": "images/vase-3.jpg"
+    },
+    {
+     "img": "images/vase-4.jpg"
+    },
+    {
+     "img": "images/vase-5.jpg"
+    },
+    {
+     "img": "images/vase-6.jpg"
+    },
+    {
+     "img": "images/vase-7.jpg"
+    },
+    {
+     "img": "images/vase-8.jpg"
+    }
+   ]
+  }
+ }
+};

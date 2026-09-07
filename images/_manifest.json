@@ -1,0 +1,167 @@
+{
+ "art-1": {
+  "label": "暖調色塊",
+  "file": "art-1.jpg",
+  "kb": 27
+ },
+ "art-2": {
+  "label": "古典風景",
+  "file": "art-2.jpg",
+  "kb": 42
+ },
+ "art-3": {
+  "label": "水墨遠山",
+  "file": "art-3.jpg",
+  "kb": 31
+ },
+ "art-4": {
+  "label": "大膽當代",
+  "file": "art-4.jpg",
+  "kb": 40
+ },
+ "art-5": {
+  "label": "黑白建築",
+  "file": "art-5.jpg",
+  "kb": 31
+ },
+ "art-6": {
+  "label": "植物圖鑑",
+  "file": "art-6.jpg",
+  "kb": 37
+ },
+ "art-7": {
+  "label": "幾何線條",
+  "file": "art-7.jpg",
+  "kb": 39
+ },
+ "art-8": {
+  "label": "抽象人物",
+  "file": "art-8.jpg",
+  "kb": 47
+ },
+ "chair-1": {
+  "label": "經典躺椅",
+  "file": "chair-1.jpg",
+  "kb": 48
+ },
+ "chair-2": {
+  "label": "古典扶手椅",
+  "file": "chair-2.jpg",
+  "kb": 35
+ },
+ "chair-3": {
+  "label": "懶骨頭",
+  "file": "chair-3.jpg",
+  "kb": 50
+ },
+ "chair-4": {
+  "label": "雕塑感單椅",
+  "file": "chair-4.jpg",
+  "kb": 32
+ },
+ "chair-5": {
+  "label": "藤編椅",
+  "file": "chair-5.jpg",
+  "kb": 39
+ },
+ "chair-6": {
+  "label": "絨布貴妃椅",
+  "file": "chair-6.jpg",
+  "kb": 33
+ },
+ "chair-7": {
+  "label": "鋼管椅",
+  "file": "chair-7.jpg",
+  "kb": 43
+ },
+ "chair-8": {
+  "label": "實木單椅",
+  "file": "chair-8.jpg",
+  "kb": 33
+ },
+ "lamp-1": {
+  "label": "和紙球燈",
+  "file": "lamp-1.jpg",
+  "kb": 49
+ },
+ "lamp-2": {
+  "label": "水晶吊燈",
+  "file": "lamp-2.jpg",
+  "kb": 70
+ },
+ "lamp-3": {
+  "label": "軌道投射燈",
+  "file": "lamp-3.jpg",
+  "kb": 45
+ },
+ "lamp-4": {
+  "label": "黃銅燭台",
+  "file": "lamp-4.jpg",
+  "kb": 41
+ },
+ "lamp-5": {
+  "label": "閱讀立燈",
+  "file": "lamp-5.jpg",
+  "kb": 60
+ },
+ "lamp-6": {
+  "label": "雕塑造型燈",
+  "file": "lamp-6.jpg",
+  "kb": 51
+ },
+ "lamp-7": {
+  "label": "陶土桌燈",
+  "file": "lamp-7.jpg",
+  "kb": 48
+ },
+ "lamp-8": {
+  "label": "藤編吊燈",
+  "file": "lamp-8.jpg",
+  "kb": 61
+ },
+ "vase-1": {
+  "label": "素陶枯枝",
+  "file": "vase-1.jpg",
+  "kb": 38
+ },
+ "vase-2": {
+  "label": "水晶牡丹",
+  "file": "vase-2.jpg",
+  "kb": 48
+ },
+ "vase-3": {
+  "label": "白瓷海芋",
+  "file": "vase-3.jpg",
+  "kb": 37
+ },
+ "vase-4": {
+  "label": "玻璃野花",
+  "file": "vase-4.jpg",
+  "kb": 50
+ },
+ "vase-5": {
+  "label": "黃銅繡球",
+  "file": "vase-5.jpg",
+  "kb": 41
+ },
+ "vase-6": {
+  "label": "熱帶葉材",
+  "file": "vase-6.jpg",
+  "kb": 33
+ },
+ "vase-7": {
+  "label": "試管單葉",
+  "file": "vase-7.jpg",
+  "kb": 34
+ },
+ "vase-8": {
+  "label": "乾燥花束",
+  "file": "vase-8.jpg",
+  "kb": 48
+ },
+ "cup-1": {
+  "label": "圓潤矮杯",
+  "file": "cup-1.jpg",
+  "kb": 26
+ }
+}
