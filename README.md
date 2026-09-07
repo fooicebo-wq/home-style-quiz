@@ -1,7 +1,17 @@
 # 集思居家風格測驗
 
 參考 purely2006 的「生活測驗」做法，但機制與內容全部重寫成集思自己的版本。
-純靜態網頁，**沒有後端、沒有資料庫、沒有月費**，丟到 GitHub Pages 或任何空間就能跑。
+純靜態網頁，**沒有後端、沒有資料庫、沒有月費**。
+
+## 網址
+
+| | 連結 |
+|---|---|
+| **測驗（給客人）** | https://fooicebo-wq.github.io/home-style-quiz/ |
+| **後台（給你）** | https://fooicebo-wq.github.io/home-style-quiz/admin.html |
+| 原始碼 | https://github.com/fooicebo-wq/home-style-quiz |
+
+本機資料夾：`E:\★★★Claude 資料總存區\居家風格測驗\`
 
 ---
 
@@ -18,18 +28,33 @@
 
 ---
 
-## 換照片（你要的後台）
+## 換照片、改文字（後台）
 
-1. 用瀏覽器打開 **`admin.html`**
-2. 點任何一張圖 → 選你的案場照片
+1. 打開後台 → https://fooicebo-wq.github.io/home-style-quiz/admin.html
+2. **換照片**：點任何一張圖 → 選你的案場照片
    - 自動**置中裁成正方形**、縮到 640px、轉 JPEG，不必事先修圖
    - 也可以直接把圖**拖進格子**
-3. 想改題目文字或選項名稱，直接在輸入框改（會即時存草稿）
+3. **改文字**：題目標題、選項名稱直接在輸入框改；
+   結果卡的 16 種原型在頁面最下方，點標題展開編輯（改過的會標成金色）
 4. 按 **預覽測驗** 確認畫面
-5. 按 **匯出 content.js** → 把下載的檔案**覆蓋**資料夾裡的 `content.js`
-6. 上傳／推上網站，完成
+5. 按 **匯出 content.js** → 下載的檔案**覆蓋**資料夾裡的 `content.js`
+6. 用下面「上線更新」把它推上去
 
-**不必一次換完。** 沒換照片的格子會自動用內建插圖，混著用也不會怪。
+**不必一次換完。** 沒換照片的格子會自動用內建插圖，混著用尺寸也一致。
+原型文字同理，只改「一句標語」也可以，其他欄位沿用預設。
+
+---
+
+## 上線更新
+
+換完照片、覆蓋好 `content.js` 之後，在資料夾裡執行：
+
+```bash
+cd "E:/★★★Claude 資料總存區/居家風格測驗" && git add -A && git commit -m "更新照片" && git push
+```
+
+推上去後約 **1～2 分鐘**線上就會更新（GitHub Pages 要重建）。
+沒更新的話按 Ctrl+F5 強制重新整理。
 
 ### 後台的其他按鈕
 - **匯入**：把舊的 `content.js` 讀回後台繼續編輯（換電腦、或草稿被清掉時用）
@@ -87,7 +112,7 @@ window.addEventListener('message', e => {
 
 ---
 
-## 本機測試
+## 本機測試（通常用不到，直接用線上後台就好）
 
 ```bash
 python -m http.server 5211 --directory "E:/★★★Claude 資料總存區/居家風格測驗"
@@ -95,14 +120,14 @@ python -m http.server 5211 --directory "E:/★★★Claude 資料總存區/居�
 
 然後開 http://localhost:5211/admin.html
 
-> 用 `python -m http.server` 而不是直接雙擊 html：後台要存草稿（localStorage），
-> `file://` 開啟時部分瀏覽器會擋。上線後是 https 就沒這問題。
+> **不要直接雙擊 html 開。** 後台要存草稿（localStorage），`file://` 開啟時瀏覽器會擋掉。
+> 線上版是 https，沒這問題，所以平常用線上後台最省事。
 
 ---
 
 ## 已知限制
 
 - **色票題不能換照片**（它本來就是色塊，不是圖）
-- **16 種原型的文字要直接改 `quiz-data.js`**，後台目前只管照片、選項名稱、題目標題
+- 草稿存在「你這台電腦的這個瀏覽器」裡。換電腦要用後台的 **匯入** 把 `content.js` 讀回來接著編
 - 照片存在 `content.js` 裡（base64），64 張全換約 1～1.5MB。想更輕可以改成放圖片網址：
   把 `content.js` 裡的 `"img": "data:image/jpeg;base64,..."` 換成 `"img": "images/xxx.jpg"`
