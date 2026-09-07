@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>後台｜集思居家風格測驗</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#232520; --paper:#FFFFFF; --bg:#F1EFE9; --line:#DCD8CC;
+  --gold:#9A7B4F; --muted:#6E6A60; --ok:#3E7A4E; --warn:#B4472E;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Noto Sans TC",-apple-system,"Microsoft JhengHei",sans-serif;background:var(--bg);color:var(--ink);font-size:18px;line-height:1.7;padding-bottom:80px}
+
+/* ---------- 頂部工具列 ---------- */
+.bar{position:sticky;top:0;z-index:50;background:#1E201C;color:#F1EFE9;padding:14px 20px;box-shadow:0 4px 18px -8px rgba(0,0,0,.5)}
+.bar .row{max-width:1180px;margin:0 auto;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.bar h1{font-size:21px;font-weight:700;letter-spacing:.04em;margin-right:auto}
+.bar h1 small{display:block;font-size:13px;font-weight:400;color:#A9A498;letter-spacing:.02em}
+.b{font-family:inherit;font-size:16px;font-weight:500;padding:11px 20px;border-radius:8px;border:1px solid #4A4C46;background:#2E312B;color:#F1EFE9;cursor:pointer;white-space:nowrap;transition:filter .15s}
+.b:hover{filter:brightness(1.25)}
+.b.pri{background:var(--gold);border-color:var(--gold);color:#fff}
+.b.danger{background:#3A2320;border-color:#5E3A33;color:#E8B4A6}
+.meter{font-size:14px;color:#A9A498;white-space:nowrap}
+.meter b{color:#F1EFE9;font-size:16px}
+.meter.hot b{color:#E8A08C}
+
+/* ---------- 內容 ---------- */
+.wrap{max-width:1180px;margin:0 auto;padding:26px 20px}
+.hint{background:#FFF8E8;border:1px solid #E4D6AE;border-radius:10px;padding:18px 22px;font-size:17px;line-height:1.9;margin-bottom:26px}
+.hint b{color:var(--gold)}
+.hint ol{margin:10px 0 0 22px}
+.hint li{margin:5px 0}
+
+.panel{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:22px 24px;margin-bottom:22px}
+.panel > h2{font-size:20px;font-weight:700;margin-bottom:4px}
+.panel > .sub{font-size:15px;color:var(--muted);margin-bottom:18px}
+
+label.f{display:block;font-size:15px;color:var(--muted);margin-bottom:6px}
+input[type=text]{width:100%;font-family:inherit;font-size:18px;padding:12px 14px;border:1px solid var(--line);border-radius:8px;background:#FCFBF8;color:var(--ink)}
+input[type=text]:focus{outline:none;border-color:var(--gold);background:#fff}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+
+/* 題目區塊 */
+.qhead{display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+.qno{background:var(--ink);color:#fff;width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:700;flex:none}
+.qhead .w{font-size:14px;color:var(--muted);background:#EFEDE6;border-radius:100px;padding:4px 12px}
+.qhead input{flex:1;min-width:260px}
+
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:16px}
+.c{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#FCFBF8}
+.c.drag{border-color:var(--gold);background:#FFF6E8}
+.c .pv{position:relative;aspect-ratio:1/1;background:#EDE9E1;cursor:pointer}
+.c .pv svg,.c .pv img{display:block;width:100%;height:100%;object-fit:cover}
+.c .pv .badge{position:absolute;left:8px;top:8px;font-size:12px;padding:3px 9px;border-radius:100px;background:rgba(30,32,28,.8);color:#fff;letter-spacing:.04em}
+.c .pv .badge.on{background:var(--ok)}
+.c .pv .over{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(30,32,28,.62);color:#fff;font-size:15px;opacity:0;transition:opacity .15s}
+.c .pv:hover .over{opacity:1}
+.c .meta{padding:11px 12px 13px}
+.c .meta input{font-size:16px;padding:9px 11px}
+.c .tools{display:flex;gap:7px;margin-top:9px}
+.c .tools button{flex:1;font-family:inherit;font-size:14px;padding:8px 0;border-radius:7px;border:1px solid var(--line);background:#fff;cursor:pointer}
+.c .tools button:hover{background:#F3F1EA}
+.c .tools button.rm{color:var(--warn);border-color:#E4C9C0}
+.c .tools button:disabled{opacity:.4;cursor:not-allowed}
+.c .vals{font-size:13px;color:var(--muted);margin-top:8px;letter-spacing:.04em}
+
+.sws{display:flex;height:100%}
+.sws i{flex:1}
+
+/* 原型編輯 */
+.arch{border:1px solid var(--line);border-radius:10px;margin-bottom:12px;background:#FCFBF8;overflow:hidden}
+.arch > summary{cursor:pointer;padding:15px 18px;font-size:18px;font-weight:500;list-style:none;display:flex;align-items:center;gap:12px}
+.arch > summary::-webkit-details-marker{display:none}
+.arch > summary::before{content:"▸";color:var(--gold);font-size:15px;transition:transform .15s}
+.arch[open] > summary::before{transform:rotate(90deg)}
+.arch > summary:hover{background:#F3F1EA}
+.arch .no{background:var(--ink);color:#fff;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;flex:none}
+.arch .vv{margin-left:auto;font-size:14px;color:var(--muted);background:#EFEDE6;border-radius:100px;padding:3px 12px;white-space:nowrap}
+.arch .bd{padding:6px 18px 20px;border-top:1px solid var(--line)}
+.arch .g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.arch .fld{margin-top:14px}
+.arch textarea{width:100%;font-family:inherit;font-size:17px;line-height:1.75;padding:12px 14px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);resize:vertical;min-height:88px}
+.arch textarea:focus,.arch input:focus{outline:none;border-color:var(--gold)}
+.arch .reset{margin-top:16px;font-family:inherit;font-size:14px;padding:8px 16px;border-radius:7px;border:1px solid var(--line);background:#fff;cursor:pointer;color:var(--warn)}
+.arch .reset:hover{background:#FBF3F1}
+.edited > summary .no{background:var(--gold)}
+@media(max-width:760px){.arch .g3{grid-template-columns:1fr}}
+
+.toast{position:fixed;left:50%;bottom:30px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:14px 26px;border-radius:100px;font-size:17px;opacity:0;transition:opacity .3s;pointer-events:none;z-index:99;max-width:90vw;text-align:center}
+.toast.on{opacity:1}
+@media(max-width:640px){
+  body{font-size:17px}
+  .grid2{grid-template-columns:1fr}
+  .bar h1{width:100%;margin-right:0}
+}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<clipPath id="win"><rect x="18" y="14" width="84" height="92" rx="2"/></clipPath>
+</defs></svg>
+
+<div class="bar">
+  <div class="row">
+    <h1>居家風格測驗 · 後台<small>換照片、改文字，改完匯出覆蓋 content.js</small></h1>
+    <div class="meter" id="meter">草稿容量 <b>0 KB</b></div>
+    <button class="b" onclick="doPreview()">預覽測驗</button>
+    <button class="b" onclick="doImport()">匯入</button>
+    <button class="b pri" onclick="doExport()">匯出 content.js</button>
+    <button class="b danger" onclick="doClear()">全部清除</button>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="hint">
+    <b>怎麼用：</b>
+    <ol>
+      <li>點任一張圖 → 選你自己的案場照片（會自動裁成正方形、壓到 640px，不必事先處理）</li>
+      <li>改完按 <b>預覽測驗</b>，確認畫面沒問題</li>
+      <li>按 <b>匯出 content.js</b>，把下載到的檔案<b>覆蓋</b>資料夾裡原本的 content.js</li>
+      <li>把整個資料夾上傳／推上網站就完成了</li>
+    </ol>
+    照片建議用<b>方形構圖、主體置中</b>；沒放照片的格子會自動用內建插圖，可以只換一部分。
+  </div>
+
+  <div class="panel">
+    <h2>品牌設定</h2>
+    <div class="sub">測完結果頁的兩個按鈕會用到</div>
+    <div class="grid2">
+      <div>
+        <label class="f">LINE 官方帳號 ID（@ 請寫成 %40，例如 %40608iofzm）</label>
+        <input type="text" id="f-line">
+      </div>
+      <div>
+        <label class="f">官網網址</label>
+        <input type="text" id="f-site">
+      </div>
+    </div>
+  </div>
+
+  <div id="qs"></div>
+
+  <div class="panel">
+    <h2>16 種居家原型</h2>
+    <div class="sub">測完顯示的結果卡文字。點標題展開編輯；改過的會標成金色。留空＝沿用預設</div>
+    <div id="archs"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<input type="file" id="picker" accept="image/*" style="display:none">
+<input type="file" id="importer" accept=".js,application/javascript,text/javascript" style="display:none">
+
+<script src="quiz-data.js"></script>
+<script src="content.js"></script>
+<script>
+const KEY = 'gisQuizDraft';
+const MAX_PX = 640, JPEG_Q = 0.82, BUDGET = 4.2 * 1024 * 1024; // localStorage 約 5MB，留安全值
+
+/* draft 結構： { brand:{lineOA,website}, questions:{ id:{title, options:[{label,img}]} } } */
+let draft = load();
+
+function load(){
+  try{
+    const d = JSON.parse(localStorage.getItem(KEY) || 'null');
+    if(d && d.questions) return d;
+  }catch(e){ console.warn(e); }
+  // 沒有草稿 → 用 content.js（若有）或預設值當起點
+  if(window.GIS_CONTENT){
+    const c = JSON.parse(JSON.stringify(window.GIS_CONTENT));
+    c.questions = c.questions || {};
+    c.archetypes = c.archetypes || {};
+    return c;
+  }
+  return {brand:{}, questions:{}, archetypes:{}};
+}
+
+function q(id){ draft.questions[id] = draft.questions[id] || {options:[]}; return draft.questions[id]; }
+function opt(id,i){ const o=q(id); o.options = o.options||[]; o.options[i] = o.options[i]||{}; return o.options[i]; }
+function arch(no){ draft.archetypes = draft.archetypes||{}; draft.archetypes[no] = draft.archetypes[no]||{}; return draft.archetypes[no]; }
+
+function save(){
+  try{
+    localStorage.setItem(KEY, JSON.stringify(draft));
+    meter();
+    return true;
+  }catch(e){
+    toast('儲存失敗：草稿太大了，請刪掉幾張照片再試');
+    return false;
+  }
+}
+
+function bytes(){ try{ return new Blob([JSON.stringify(draft)]).size; }catch(e){ return JSON.stringify(draft).length; } }
+function meter(){
+  const b = bytes(), m = document.getElementById('meter');
+  m.innerHTML = '草稿容量 <b>' + (b/1024/1024 >= 1 ? (b/1024/1024).toFixed(2)+' MB' : Math.round(b/1024)+' KB') + '</b>';
+  m.className = 'meter' + (b > BUDGET*0.8 ? ' hot' : '');
+}
+
+/* ---------- 畫面 ---------- */
+function build(){
+  document.getElementById('f-line').value = (draft.brand && draft.brand.lineOA) || CONFIG.lineOA;
+  document.getElementById('f-site').value = (draft.brand && draft.brand.website) || CONFIG.website;
+
+  let h = '';
+  QUIZ.forEach((Q, qi)=>{
+    const d = draft.questions[Q.id] || {};
+    h += '<div class="panel">'
+       + '<div class="qhead"><div class="qno">'+(qi+1)+'</div>'
+       + '<input type="text" data-title="'+Q.id+'" value="'+esc(d.title || Q.title)+'">'
+       + '<span class="w">權重 '+Q.w+'</span></div>'
+       + '<div class="cards">';
+    Q.options.forEach((o,oi)=>{
+      const od = (d.options && d.options[oi]) || {};
+      const hasImg = !!od.img;
+      const visual = Q.type==='swatch'
+        ? '<div class="sws">'+o.hex.map(c=>'<i style="background:'+c+'"></i>').join('')+'</div>'
+        : (hasImg ? '<img src="'+od.img+'" alt="">' : G[o.g]);
+      const clickable = Q.type==='swatch' ? '' : ' onclick="choose(\''+Q.id+'\','+oi+')"';
+      h += '<div class="c" data-q="'+Q.id+'" data-i="'+oi+'">'
+         +   '<div class="pv"'+clickable+'>'+visual
+         +     (Q.type==='swatch' ? '<span class="badge">色票題</span>'
+                                  : '<span class="badge'+(hasImg?' on':'')+'">'+(hasImg?'已換照片':'預設插圖')+'</span>'
+                                    +'<div class="over">點此選照片</div>')
+         +   '</div>'
+         +   '<div class="meta">'
+         +     '<input type="text" data-label="'+Q.id+'" data-i="'+oi+'" value="'+esc(od.label || o.label)+'">'
+         +     (Q.type==='swatch' ? '' :
+                '<div class="tools">'
+               +  '<button onclick="choose(\''+Q.id+'\','+oi+')">'+(hasImg?'更換':'上傳')+'</button>'
+               +  '<button class="rm" onclick="removeImg(\''+Q.id+'\','+oi+')"'+(hasImg?'':' disabled')+'>移除</button>'
+               + '</div>')
+         +     '<div class="vals">計分：'+o.v[0]+' +2　'+o.v[1]+' +1</div>'
+         +   '</div>'
+         + '</div>';
+    });
+    h += '</div></div>';
+  });
+  document.getElementById('qs').innerHTML = h;
+  buildArchs();
+  wire();
+  meter();
+}
+
+/* ---------- 16 種原型編輯器 ---------- */
+const A_FIELDS = [
+  {k:'zh',  t:'原型名稱（中文）', type:'text'},
+  {k:'en',  t:'原型名稱（英文）', type:'text'},
+  {k:'tag', t:'一句標語', type:'text'}
+];
+function buildArchs(){
+  const openSet = new Set([...document.querySelectorAll('.arch[open]')].map(d=>d.dataset.no));
+  let h = '';
+  ARCH.forEach(A=>{
+    const d = (draft.archetypes && draft.archetypes[A.no]) || {};
+    const edited = Object.keys(d).some(k=>{
+      const v = d[k];
+      return Array.isArray(v) ? v.some(x=>x) : !!v;
+    });
+    const val = k => (d[k] !== undefined && d[k] !== null && d[k] !== '') ? d[k] : A[k];
+    const arr = (k,i) => (d[k] && d[k][i]) ? d[k][i] : A[k][i];
+
+    h += '<details class="arch'+(edited?' edited':'')+'" data-no="'+A.no+'"'+(openSet.has(String(A.no))?' open':'')+'>'
+       + '<summary><span class="no">'+A.no+'</span>'+esc(val('zh'))
+       +   '<span class="vv">'+A.v[0]+' × '+A.v[1]+'</span></summary>'
+       + '<div class="bd">';
+
+    h += '<div class="g3">';
+    A_FIELDS.forEach(f=>{
+      h += '<div><label class="f">'+f.t+'</label>'
+         + '<input type="text" data-a="'+A.no+'" data-k="'+f.k+'" value="'+esc(val(f.k))+'"></div>';
+    });
+    h += '</div>';
+
+    h += '<div class="fld"><label class="f">描述（結果卡主文）</label>'
+       + '<textarea data-a="'+A.no+'" data-k="desc">'+esc(val('desc'))+'</textarea></div>';
+
+    h += '<div class="fld"><label class="f">三個居家特質</label><div class="g3">'
+       + [0,1,2].map(i=>'<input type="text" data-a="'+A.no+'" data-k="traits" data-i="'+i+'" value="'+esc(arr('traits',i))+'">').join('')
+       + '</div></div>';
+
+    h += '<div class="fld"><label class="f">三個空間關鍵字</label><div class="g3">'
+       + [0,1,2].map(i=>'<input type="text" data-a="'+A.no+'" data-k="kw" data-i="'+i+'" value="'+esc(arr('kw',i))+'">').join('')
+       + '</div></div>';
+
+    h += '<div class="fld"><label class="f">適合的材質與色調</label>'
+       + '<textarea data-a="'+A.no+'" data-k="mat" style="min-height:64px">'+esc(val('mat'))+'</textarea></div>';
+
+    h += '<div class="fld"><label class="f">給你的設計方向（深色框那句）</label>'
+       + '<textarea data-a="'+A.no+'" data-k="dir" style="min-height:64px">'+esc(val('dir'))+'</textarea></div>';
+
+    h += '<button class="reset" onclick="resetArch('+A.no+')">還原這個原型的預設文字</button>';
+    h += '</div></details>';
+  });
+  document.getElementById('archs').innerHTML = h;
+}
+
+function resetArch(no){
+  if(draft.archetypes) delete draft.archetypes[no];
+  save(); buildArchs(); wire(); toast('已還原第 '+no+' 個原型');
+}
+
+const esc = s => String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
+
+function wire(){
+  document.querySelectorAll('[data-title]').forEach(inp=>{
+    inp.oninput = ()=>{ q(inp.dataset.title).title = inp.value; save(); };
+  });
+  document.querySelectorAll('[data-label]').forEach(inp=>{
+    inp.oninput = ()=>{ opt(inp.dataset.label, +inp.dataset.i).label = inp.value; save(); };
+  });
+  // 原型文字（單值欄位）
+  document.querySelectorAll('[data-a][data-k]:not([data-i])').forEach(inp=>{
+    inp.oninput = ()=>{
+      arch(inp.dataset.a)[inp.dataset.k] = inp.value;
+      save();
+      if(inp.dataset.k === 'zh'){
+        const s = inp.closest('.arch').querySelector('summary');
+        s.childNodes[1].nodeValue = inp.value;
+      }
+      inp.closest('.arch').classList.add('edited');
+    };
+  });
+  // 原型文字（陣列欄位：traits / kw）
+  document.querySelectorAll('[data-a][data-k][data-i]').forEach(inp=>{
+    inp.oninput = ()=>{
+      const a = arch(inp.dataset.a), k = inp.dataset.k;
+      const base = ARCH.find(x=>x.no == inp.dataset.a)[k];
+      a[k] = a[k] || base.slice();
+      a[k][+inp.dataset.i] = inp.value;
+      save();
+      inp.closest('.arch').classList.add('edited');
+    };
+  });
+
+  document.getElementById('f-line').oninput = e=>{ draft.brand=draft.brand||{}; draft.brand.lineOA=e.target.value.trim(); save(); };
+  document.getElementById('f-site').oninput = e=>{ draft.brand=draft.brand||{}; draft.brand.website=e.target.value.trim(); save(); };
+
+  // 拖放上傳
+  document.querySelectorAll('.c').forEach(card=>{
+    const qid = card.dataset.q, oi = +card.dataset.i;
+    const Q = QUIZ.find(x=>x.id===qid);
+    if(Q.type==='swatch') return;
+    card.ondragover = e=>{ e.preventDefault(); card.classList.add('drag'); };
+    card.ondragleave = ()=> card.classList.remove('drag');
+    card.ondrop = e=>{
+      e.preventDefault(); card.classList.remove('drag');
+      const f = e.dataTransfer.files && e.dataTransfer.files[0];
+      if(f) handleFile(f, qid, oi);
+    };
+  });
+}
+
+/* ---------- 上傳與壓縮 ---------- */
+let pending = null;
+function choose(qid, oi){
+  pending = {qid, oi};
+  const p = document.getElementById('picker');
+  p.value = '';
+  p.click();
+}
+document.getElementById('picker').onchange = e=>{
+  const f = e.target.files && e.target.files[0];
+  if(f && pending) handleFile(f, pending.qid, pending.oi);
+};
+
+function handleFile(file, qid, oi){
+  if(!/^image\//.test(file.type)){ toast('請選圖片檔'); return; }
+  const r = new FileReader();
+  r.onload = ()=>{
+    const im = new Image();
+    im.onload = ()=>{
+      // 置中裁成正方形，再縮到 640px
+      const side = Math.min(im.width, im.height);
+      const sx = (im.width - side)/2, sy = (im.height - side)/2;
+      const out = Math.min(side, MAX_PX);
+      const cv = document.createElement('canvas');
+      cv.width = cv.height = out;
+      const cx = cv.getContext('2d');
+      cx.fillStyle = '#EDE9E1'; cx.fillRect(0,0,out,out);
+      cx.drawImage(im, sx, sy, side, side, 0, 0, out, out);
+      const data = cv.toDataURL('image/jpeg', JPEG_Q);
+
+      const prev = opt(qid,oi).img;
+      opt(qid,oi).img = data;
+      if(bytes() > BUDGET){
+        if(prev) opt(qid,oi).img = prev; else delete opt(qid,oi).img;
+        toast('已達容量上限，這張沒有存進去。請先移除幾張舊照片');
+        return;
+      }
+      if(save()){ build(); toast('已更新（' + Math.round(data.length/1024) + ' KB）'); }
+    };
+    im.onerror = ()=> toast('這張圖讀不起來，換一張試試');
+    im.src = r.result;
+  };
+  r.onerror = ()=> toast('檔案讀取失敗');
+  r.readAsDataURL(file);
+}
+
+function removeImg(qid, oi){
+  delete opt(qid,oi).img;
+  save(); build(); toast('已移除，改回預設插圖');
+}
+
+/* ---------- 預覽 / 匯出 / 匯入 / 清除 ---------- */
+function doPreview(){
+  save();
+  window.open('index.html?preview=1', '_blank');
+}
+
+function clean(){
+  // 丟掉沒有實際覆寫內容的空殼，讓匯出的檔案盡量小
+  const out = {questions:{}};
+  if(draft.brand && (draft.brand.lineOA || draft.brand.website)) out.brand = draft.brand;
+  QUIZ.forEach(Q=>{
+    const d = draft.questions[Q.id]; if(!d) return;
+    const o = {};
+    if(d.title && d.title !== Q.title) o.title = d.title;
+    const opts = [];
+    let any = false;
+    Q.options.forEach((src,i)=>{
+      const od = (d.options && d.options[i]) || {};
+      const e = {};
+      if(od.label && od.label !== src.label) e.label = od.label;
+      if(od.img) e.img = od.img;
+      if(Object.keys(e).length) any = true;
+      opts[i] = e;
+    });
+    if(any) o.options = opts;
+    if(Object.keys(o).length) out.questions[Q.id] = o;
+  });
+
+  // 原型：只輸出真的跟預設不一樣的欄位
+  const ax = {};
+  ARCH.forEach(A=>{
+    const d = (draft.archetypes && draft.archetypes[A.no]) || {};
+    const o = {};
+    ['zh','en','tag','desc','mat','dir'].forEach(k=>{
+      if(d[k] && d[k] !== A[k]) o[k] = d[k];
+    });
+    ['traits','kw'].forEach(k=>{
+      if(!Array.isArray(d[k])) return;
+      const list = A[k].map((def,i)=> (d[k][i] && d[k][i] !== def) ? d[k][i] : '');
+      if(list.some(x=>x)) o[k] = list;
+    });
+    if(Object.keys(o).length) ax[A.no] = o;
+  });
+  if(Object.keys(ax).length) out.archetypes = ax;
+
+  return out;
+}
+
+function doExport(){
+  const data = clean();
+  const n = JSON.stringify(data).match(/"img":"data:/g);
+  const js = '/* ============================================================\n'
+    + '   content.js — 集思居家風格測驗 覆寫檔\n'
+    + '   由 admin.html 後台於 ' + new Date().toLocaleString('zh-TW') + ' 匯出\n'
+    + '   照片數：' + (n ? n.length : 0) + ' 張\n'
+    + '   用法：把這個檔案覆蓋掉資料夾裡原本的 content.js\n'
+    + '   ============================================================ */\n'
+    + 'window.GIS_CONTENT = ' + JSON.stringify(data, null, 1) + ';\n';
+  const blob = new Blob([js], {type:'text/javascript;charset=utf-8'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'content.js';
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href), 4000);
+  toast('已下載 content.js — 請覆蓋資料夾裡的同名檔案');
+}
+
+function doImport(){ document.getElementById('importer').click(); }
+document.getElementById('importer').onchange = e=>{
+  const f = e.target.files && e.target.files[0];
+  if(!f) return;
+  const r = new FileReader();
+  r.onload = ()=>{
+    const t = String(r.result);
+    const s = t.indexOf('{'), l = t.lastIndexOf('}');
+    if(s < 0 || l < s){ toast('這不像是 content.js'); return; }
+    try{
+      const d = JSON.parse(t.slice(s, l+1));
+      if(!d.questions){ toast('檔案內容不對，缺少 questions'); return; }
+      draft = d;
+      if(save()){ build(); toast('已匯入'); }
+    }catch(err){ toast('解析失敗：' + err.message); }
+  };
+  r.readAsText(f);
+};
+
+function doClear(){
+  if(!confirm('確定要清掉全部草稿？所有換過的照片與文字都會不見（已匯出的 content.js 不受影響）')) return;
+  localStorage.removeItem(KEY);
+  draft = {brand:{}, questions:{}, archetypes:{}};
+  build(); toast('已清除，回到預設狀態');
+}
+
+let tt;
+function toast(m){
+  const t = document.getElementById('toast');
+  t.textContent = m; t.classList.add('on');
+  clearTimeout(tt); tt = setTimeout(()=>t.classList.remove('on'), 3000);
+}
+
+build();
+</script>
+</body>
+</html>

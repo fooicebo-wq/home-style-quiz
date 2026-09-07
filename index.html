@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>集思居家風格測驗｜你的居家原型</title>
+<meta name="description" content="八個問題，憑直覺選。找出你的居家原型，看見你理想中的家該長什麼樣子。集思室內設計。">
+<meta property="og:title" content="集思居家風格測驗｜你的居家原型">
+<meta property="og:description" content="八個問題，一分鐘，測出你的居家原型。">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;600;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ---------- 品牌配色：要改顏色只動這裡 ---------- */
+:root{
+  --ink:#232520; --deep:#1A1C18; --cream:#F4F2EC; --paper:#FBFAF7;
+  --gold:#9A7B4F; --gold-soft:#D6C4A6; --line:#E2DFD5; --muted:#7B776D;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:"Noto Sans TC",-apple-system,"Microsoft JhengHei",sans-serif;background:var(--cream);color:var(--ink);line-height:1.75;font-weight:300;-webkit-font-smoothing:antialiased}
+#app{max-width:520px;margin:0 auto;min-height:100vh;position:relative}
+.screen{display:none;padding:0 24px 48px}
+.screen.on{display:block;animation:fade .4s ease}
+@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+/* 封面 */
+.intro{min-height:100vh;display:flex;flex-direction:column;justify-content:center;text-align:center;padding:48px 26px}
+.mark{width:126px;height:126px;margin:0 auto 30px;border-radius:3px;background:var(--deep);position:relative;overflow:hidden;box-shadow:0 22px 54px rgba(26,26,26,.24)}
+.mark::before{content:"";position:absolute;inset:0;background:
+  radial-gradient(circle at 34% 31%,var(--gold-soft) 0 9%,transparent 10%),
+  radial-gradient(circle at 67% 63%,var(--gold) 0 7.5%,transparent 8.5%),
+  linear-gradient(135deg,#2b2822,#141210)}
+.eyebrow{font-size:13px;letter-spacing:.4em;color:var(--gold);font-weight:500;margin-bottom:18px}
+.intro h1{font-family:"Noto Serif TC",serif;font-weight:600;font-size:33px;letter-spacing:.03em;line-height:1.42}
+.intro p{color:var(--muted);font-size:16px;margin:20px auto 0;max-width:360px;line-height:1.95}
+.layers{margin:28px 0 36px;font-family:"Noto Serif TC",serif;font-size:16px;letter-spacing:.32em;color:var(--gold)}
+.btn{display:inline-block;font-family:inherit;font-size:17px;font-weight:500;cursor:pointer;padding:16px 48px;border-radius:100px;border:1px solid var(--ink);background:var(--ink);color:var(--cream);letter-spacing:.08em;transition:transform .16s}
+.btn:active{transform:scale(.97)}
+.note{font-size:13px;color:var(--muted);margin-top:20px;letter-spacing:.03em}
+
+/* 進度 */
+.topbar{position:sticky;top:0;z-index:10;background:var(--cream);padding:22px 0 14px}
+.track{height:3px;background:var(--line);border-radius:2px;overflow:hidden}
+.track i{display:block;height:100%;background:var(--gold);transition:width .45s ease;width:0}
+.qnum{font-size:13px;color:var(--muted);letter-spacing:.12em;margin-top:11px;text-align:center}
+
+/* 題目 */
+.qtitle{font-family:"Noto Serif TC",serif;font-size:23px;font-weight:600;text-align:center;margin:10px 0 5px;line-height:1.5}
+.qsub{text-align:center;font-size:13.5px;color:var(--gold);letter-spacing:.06em;margin-bottom:22px}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.opt{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--paper);cursor:pointer;transition:transform .16s,box-shadow .16s,border-color .16s}
+.opt:active{transform:scale(.97)}
+.opt:hover{border-color:var(--gold-soft);box-shadow:0 8px 22px -12px rgba(35,37,32,.35)}
+.opt svg,.opt img{display:block;width:100%;height:auto;aspect-ratio:1/1;object-fit:cover}
+.opt .lbl{font-size:14px;text-align:center;padding:11px 6px 13px;letter-spacing:.05em;color:#3d3a35}
+.opt.sw{padding:14px 12px 4px}
+.sws{display:flex;height:52px;border-radius:6px;overflow:hidden}
+.sws i{flex:1}
+.opt.sw .lbl{padding:11px 0 13px}
+
+/* 結果 */
+.result{padding-top:30px}
+.card{background:var(--paper);border-radius:14px;overflow:hidden;box-shadow:0 22px 54px -26px rgba(35,37,32,.5);margin-bottom:22px}
+.card .top{background:linear-gradient(165deg,#2A2721,#15130F);color:var(--cream);padding:34px 26px 30px;text-align:center}
+.card .k{font-size:12px;letter-spacing:.34em;color:var(--gold-soft);margin-bottom:14px}
+.card h2{font-family:"Noto Serif TC",serif;font-size:31px;font-weight:600;letter-spacing:.05em;line-height:1.35}
+.card .en{font-size:13px;letter-spacing:.22em;color:var(--gold-soft);margin-top:9px}
+.card .tag{margin-top:18px;display:inline-block;border:1px solid rgba(214,196,166,.5);border-radius:100px;padding:7px 18px;font-size:13.5px;letter-spacing:.05em}
+.card .body{padding:26px 24px 28px}
+.quote{font-family:"Noto Serif TC",serif;font-size:19px;font-weight:600;text-align:center;color:var(--gold);line-height:1.6;margin-bottom:16px}
+.desc{font-size:15.5px;line-height:2;color:#3d3a35;text-align:justify}
+.sec{text-align:left;margin-top:24px}
+.sec .h{font-size:12px;letter-spacing:.2em;color:var(--gold);font-weight:500;margin-bottom:10px}
+.sec ul{list-style:none}
+.sec li{font-size:15px;padding:9px 0 9px 22px;position:relative;border-bottom:1px solid var(--line);color:#3d3a35}
+.sec li:last-child{border-bottom:none}
+.sec li::before{content:"";position:absolute;left:3px;top:18px;width:6px;height:6px;border-radius:50%;background:var(--gold-soft)}
+.kwrow{display:flex;flex-wrap:wrap;gap:8px}
+.kwrow span{background:var(--cream);border:1px solid var(--gold-soft);color:var(--gold);border-radius:100px;font-size:13.5px;padding:6px 15px;letter-spacing:.04em}
+.sec p.t{font-size:15px;line-height:2;color:#3d3a35}
+.dir{background:linear-gradient(180deg,#1E1B17,#141210);color:var(--cream);border-radius:10px;padding:20px 22px;margin-top:24px;text-align:left}
+.dir .h{font-size:12px;letter-spacing:.2em;color:var(--gold-soft);margin-bottom:8px}
+.dir p{font-family:"Noto Serif TC",serif;font-size:17px;font-weight:500;line-height:1.65}
+.alt{margin-top:20px;text-align:left;background:var(--cream);border-radius:10px;padding:18px 20px}
+.alt .h{font-size:12px;letter-spacing:.2em;color:var(--gold);margin-bottom:7px}
+.alt b{font-family:"Noto Serif TC",serif;font-size:17px}
+.alt .e{font-size:13px;color:var(--muted);letter-spacing:.14em;margin-left:8px}
+.alt .q{font-size:14.5px;color:#3d3a35;margin-top:5px}
+.card .foot{border-top:1px solid var(--line);padding:16px;text-align:center;font-size:12.5px;color:var(--muted);letter-spacing:.1em}
+.card .foot .g{color:var(--gold)}
+
+/* 行動按鈕 */
+.acts{display:flex;flex-direction:column;gap:11px}
+.abtn{display:block;text-align:center;font-family:inherit;font-size:16.5px;font-weight:500;padding:17px;border-radius:100px;letter-spacing:.06em;cursor:pointer;border:1px solid var(--ink);text-decoration:none;transition:transform .16s}
+.abtn:active{transform:scale(.98)}
+.abtn.line{background:#06C755;border-color:#06C755;color:#fff}
+.abtn.gold{background:var(--gold);border-color:var(--gold);color:#fff}
+.abtn.ghost{background:transparent;color:var(--ink)}
+.retry{display:block;margin:20px auto 0;font-family:inherit;font-size:15px;color:var(--muted);background:none;border:none;cursor:pointer;text-decoration:underline;letter-spacing:.05em}
+.toast{position:fixed;left:50%;bottom:44px;transform:translateX(-50%);background:var(--ink);color:var(--cream);padding:13px 24px;border-radius:100px;font-size:14px;opacity:0;transition:opacity .3s;pointer-events:none;z-index:50;max-width:88vw;text-align:center}
+.toast.on{opacity:1}
+.pvbar{position:fixed;top:0;left:0;right:0;background:#9A7B4F;color:#fff;font-size:13px;text-align:center;padding:7px;z-index:99;letter-spacing:.05em}
+body.pv{padding-top:32px}
+body.pv .topbar{top:32px}
+@media(max-width:360px){.intro h1{font-size:29px}.qtitle{font-size:21px}.card h2{font-size:27px}}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<clipPath id="win"><rect x="18" y="14" width="84" height="92" rx="2"/></clipPath>
+</defs></svg>
+
+<div id="app">
+  <section class="screen on" id="s-intro">
+    <div class="intro">
+      <div class="mark"></div>
+      <div class="eyebrow">GIS · HOME ARCHETYPE</div>
+      <h1>你的居家<br>風格原型測驗</h1>
+      <p>八個問題，憑直覺選。<br>你挑的每一個畫面，都在說出你沒說出口的——你理想中的家，到底長什麼樣子。</p>
+      <div class="layers">聽 · 想 · 畫 · 做 · 陪</div>
+      <div><button class="btn" onclick="start()">開始測驗</button></div>
+      <div class="note">約 1 分鐘 · 憑直覺，別想太久</div>
+    </div>
+  </section>
+
+  <section class="screen" id="s-quiz">
+    <div class="topbar">
+      <div class="track"><i id="bar"></i></div>
+      <div class="qnum" id="qnum"></div>
+    </div>
+    <div id="qbody"></div>
+  </section>
+
+  <section class="screen" id="s-result">
+    <div class="result">
+      <div class="card" id="card"></div>
+      <div class="acts">
+        <button class="abtn gold" onclick="doShare()">分享我的結果</button>
+        <a class="abtn line" id="lineBtn" target="_blank" rel="noopener">用 LINE 把結果傳給設計師</a>
+        <a class="abtn ghost" id="siteBtn" target="_blank" rel="noopener">看看集思的作品</a>
+      </div>
+      <button class="retry" onclick="reset()">重新測一次</button>
+    </div>
+  </section>
+</div>
+<div class="toast" id="toast"></div>
+
+<!-- 1. 資料檔（題目、原型、預設插圖） -->
+<script src="quiz-data.js"></script>
+<!-- 2. 後台匯出的覆寫檔（照片、文字）。沒有這個檔也能正常運作 -->
+<script src="content.js"></script>
+
+<script>
+/* ---------- 套用內容：正式用 content.js；?preview=1 時改用後台草稿 ---------- */
+(function(){
+  const isPreview = new URLSearchParams(location.search).get('preview') === '1';
+  if(isPreview){
+    try{
+      const draft = JSON.parse(localStorage.getItem('gisQuizDraft') || 'null');
+      if(draft){
+        applyContent(draft);
+        const b = document.createElement('div');
+        b.className = 'pvbar';
+        b.textContent = '後台預覽模式（讀取草稿，尚未匯出）';
+        document.body.appendChild(b);
+        document.body.classList.add('pv');
+      }
+    }catch(e){ console.warn('草稿讀取失敗', e); }
+  }else{
+    applyContent(window.GIS_CONTENT);
+  }
+})();
+
+/* ---------- 追蹤：同時送 GA4、FB Pixel、以及 postMessage 給外層網頁 ---------- */
+function track(name, params){
+  params = params || {};
+  try{ if(window.gtag) gtag('event', name, params); }catch(e){}
+  try{ if(window.fbq) fbq('trackCustom', name, params); }catch(e){}
+  try{ if(window.parent !== window) window.parent.postMessage({source:'gis-quiz', event:name, params:params}, '*'); }catch(e){}
+}
+
+let cur = 0, scores = {}, picks = [];
+const el = id => document.getElementById(id);
+function show(id){ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on')); el(id).classList.add('on'); window.scrollTo(0,0); }
+
+function start(){ cur=0; scores={}; picks=[]; track('quiz_start'); render(); show('s-quiz'); }
+function reset(){ track('quiz_retry'); show('s-intro'); }
+
+function render(){
+  const q = QUIZ[cur];
+  el('bar').style.width = (cur / QUIZ.length * 100) + '%';
+  el('qnum').textContent = (cur+1) + ' / ' + QUIZ.length;
+  let h = '<div class="qtitle">'+q.title+'</div><div class="qsub">憑直覺，三秒內選一個</div><div class="opts">';
+  q.options.forEach((o,i)=>{
+    const visual = q.type==='swatch'
+      ? '<div class="sws">'+o.hex.map(c=>'<i style="background:'+c+'"></i>').join('')+'</div>'
+      : (o.img ? '<img src="'+o.img+'" alt="'+o.label+'" loading="lazy">' : G[o.g]);
+    h += '<div class="opt'+(q.type==='swatch'?' sw':'')+'" role="button" tabindex="0" onclick="pick('+cur+','+i+')">'
+       + visual + '<div class="lbl">'+o.label+'</div></div>';
+  });
+  el('qbody').innerHTML = h + '</div>';
+}
+
+function pick(qi, oi){
+  const q = QUIZ[qi], o = q.options[oi];
+  scores[o.v[0]] = (scores[o.v[0]]||0) + 2*q.w;
+  scores[o.v[1]] = (scores[o.v[1]]||0) + 1*q.w;
+  picks.push(q.id + ':' + o.label);
+  track('quiz_answer', {question:q.id, choice:o.label, step:qi+1});
+  cur++;
+  if(cur < QUIZ.length){ render(); window.scrollTo(0,0); }
+  else finish();
+}
+
+function finish(){
+  el('bar').style.width = '100%';
+  const ranked = ARCH
+    .map(a => ({a, sc:(scores[a.v[0]]||0)*2 + (scores[a.v[1]]||0), dom:(scores[a.v[0]]||0)}))
+    .sort((x,y) => y.sc - x.sc || y.dom - x.dom);
+  const best = ranked[0].a;
+  const alt  = ranked.find(r => r.a.no !== best.no).a;
+  window._result = best;
+
+  el('card').innerHTML =
+    '<div class="top"><div class="k">你的居家原型</div><h2>'+best.zh+'</h2>'
+     +'<div class="en">'+best.en+'</div><div class="tag">'+best.tag+'</div></div>'
+   +'<div class="body">'
+     +'<div class="quote">「'+best.tag+'」</div>'
+     +'<div class="desc">'+best.desc+'</div>'
+     +'<div class="sec"><div class="h">你的三個居家特質</div><ul>'+best.traits.map(t=>'<li>'+t+'</li>').join('')+'</ul></div>'
+     +'<div class="sec"><div class="h">你的空間關鍵字</div><div class="kwrow">'+best.kw.map(k=>'<span>'+k+'</span>').join('')+'</div></div>'
+     +'<div class="sec"><div class="h">適合你的材質與色調</div><p class="t">'+best.mat+'</p></div>'
+     +'<div class="dir"><div class="h">給你的設計方向</div><p>'+best.dir+'</p></div>'
+     +'<div class="alt"><div class="h">你的另一面</div><b>'+alt.zh+'</b><span class="e">'+alt.en+'</span>'
+       +'<div class="q">「'+alt.tag+'」</div></div>'
+   +'</div>'
+   +'<div class="foot">'+CONFIG.brand+' <span class="g">'+CONFIG.brandEn+'</span>　'+CONFIG.motto+'</div>';
+
+  const lineMsg = '我的居家原型是【'+best.zh+'・'+best.en+'】\n「'+best.tag+'」\n想聊聊我家可以怎麼做。';
+  el('lineBtn').href = 'https://line.me/R/oaMessage/'+CONFIG.lineOA+'/?'+encodeURIComponent(lineMsg);
+  el('siteBtn').href = CONFIG.website;
+  el('lineBtn').onclick = ()=>track('quiz_cta_line', {result:best.zh});
+  el('siteBtn').onclick = ()=>track('quiz_cta_site', {result:best.zh});
+
+  track('quiz_complete', {result:best.zh, result_en:best.en, alt:alt.zh, path:picks.join('|')});
+  show('s-result');
+}
+
+function doShare(){
+  const r = window._result;
+  const txt = '我的居家原型是【'+r.zh+'・'+r.en+'】——'+r.tag+'。\n你呢？來測你的居家風格原型！\n'+location.href.split('?')[0]+'\n'+CONFIG.hashtag;
+  track('quiz_share', {result:r.zh});
+  if(navigator.share){
+    navigator.share({title:'集思居家風格測驗', text:txt}).catch(()=>{});
+  }else if(navigator.clipboard){
+    navigator.clipboard.writeText(txt).then(
+      ()=>toast('文字已複製，截圖這張卡片發限動吧！'),
+      ()=>toast('請長按截圖，分享你的結果卡')
+    );
+  }else{
+    toast('請長按截圖，分享你的結果卡');
+  }
+}
+
+let tt;
+function toast(m){
+  const t = el('toast');
+  t.textContent = m; t.classList.add('on');
+  clearTimeout(tt); tt = setTimeout(()=>t.classList.remove('on'), 2800);
+}
+
+document.addEventListener('keydown', e=>{
+  if(e.key==='Enter' && document.activeElement && document.activeElement.classList.contains('opt')){
+    document.activeElement.click();
+  }
+});
+</script>
+</body>
+</html>
