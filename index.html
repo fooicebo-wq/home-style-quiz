@@ -186,6 +186,8 @@ const el = id => document.getElementById(id);
 function show(id){ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on')); el(id).classList.add('on'); window.scrollTo(0,0); }
 
 function start(){ cur=0; scores={}; picks=[]; track('quiz_start'); render(); show('s-quiz'); }
+// 封面停留時就先抓第一題的圖，按下開始不必等
+window.addEventListener('load', ()=>preload(0));
 function reset(){ track('quiz_retry'); show('s-intro'); }
 
 function render(){
@@ -201,6 +203,16 @@ function render(){
        + visual + '<div class="lbl">'+o.label+'</div></div>';
   });
   el('qbody').innerHTML = h + '</div>';
+  preload(cur + 1);   // 先把下一題的圖抓好，換題時才不會閃空格
+}
+
+// 背景預載某一題的照片（沒有照片的題目不做事）
+const _pre = {};
+function preload(i){
+  const q = QUIZ[i];
+  if(!q || _pre[i]) return;
+  _pre[i] = 1;
+  q.options.forEach(o=>{ if(o.img){ const im = new Image(); im.src = o.img; } });
 }
 
 function pick(qi, oi){
