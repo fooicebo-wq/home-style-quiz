@@ -82,42 +82,42 @@
  "lamp-1": {
   "label": "和紙球燈",
   "file": "lamp-1.jpg",
-  "kb": 49
+  "kb": 28
  },
  "lamp-2": {
   "label": "水晶吊燈",
   "file": "lamp-2.jpg",
-  "kb": 70
+  "kb": 31
  },
  "lamp-3": {
   "label": "軌道投射燈",
   "file": "lamp-3.jpg",
-  "kb": 45
+  "kb": 24
  },
  "lamp-4": {
   "label": "黃銅燭台",
   "file": "lamp-4.jpg",
-  "kb": 41
+  "kb": 25
  },
  "lamp-5": {
   "label": "閱讀立燈",
   "file": "lamp-5.jpg",
-  "kb": 60
+  "kb": 24
  },
  "lamp-6": {
   "label": "雕塑造型燈",
   "file": "lamp-6.jpg",
-  "kb": 51
+  "kb": 28
  },
  "lamp-7": {
   "label": "陶土桌燈",
   "file": "lamp-7.jpg",
-  "kb": 48
+  "kb": 33
  },
  "lamp-8": {
   "label": "藤編吊燈",
   "file": "lamp-8.jpg",
-  "kb": 61
+  "kb": 31
  },
  "vase-1": {
   "label": "素陶枯枝",
@@ -162,6 +162,121 @@
  "cup-1": {
   "label": "圓潤矮杯",
   "file": "cup-1.jpg",
+  "kb": 27
+ },
+ "cup-2": {
+  "label": "直紋高杯",
+  "file": "cup-2.jpg",
+  "kb": 30
+ },
+ "cup-3": {
+  "label": "方形厚底",
+  "file": "cup-3.jpg",
+  "kb": 23
+ },
+ "cup-4": {
+  "label": "馬丁尼杯",
+  "file": "cup-4.jpg",
+  "kb": 27
+ },
+ "cup-5": {
+  "label": "香檳杯",
+  "file": "cup-5.jpg",
+  "kb": 14
+ },
+ "cup-6": {
+  "label": "刻花水晶",
+  "file": "cup-6.jpg",
+  "kb": 25
+ },
+ "cup-7": {
+  "label": "長梗紅酒杯",
+  "file": "cup-7.jpg",
+  "kb": 23
+ },
+ "cup-8": {
+  "label": "手作陶杯",
+  "file": "cup-8.jpg",
+  "kb": 47
+ },
+ "view-1": {
+  "label": "遠山",
+  "file": "view-1.jpg",
+  "kb": 47
+ },
+ "view-2": {
+  "label": "海景",
+  "file": "view-2.jpg",
+  "kb": 67
+ },
+ "view-3": {
+  "label": "城市夜景",
+  "file": "view-3.jpg",
+  "kb": 78
+ },
+ "view-4": {
+  "label": "庭院綠意",
+  "file": "view-4.jpg",
+  "kb": 101
+ },
+ "view-5": {
+  "label": "老街巷弄",
+  "file": "view-5.jpg",
+  "kb": 98
+ },
+ "view-6": {
+  "label": "雪夜",
+  "file": "view-6.jpg",
+  "kb": 81
+ },
+ "view-7": {
+  "label": "田野",
+  "file": "view-7.jpg",
+  "kb": 43
+ },
+ "view-8": {
+  "label": "叢林",
+  "file": "view-8.jpg",
+  "kb": 109
+ },
+ "handle-1": {
+  "label": "手工黃銅",
+  "file": "handle-1.jpg",
+  "kb": 22
+ },
+ "handle-2": {
+  "label": "古典銅雕",
+  "file": "handle-2.jpg",
+  "kb": 27
+ },
+ "handle-3": {
+  "label": "不鏽鋼長把",
+  "file": "handle-3.jpg",
   "kb": 26
+ },
+ "handle-4": {
+  "label": "隱藏暗把",
+  "file": "handle-4.jpg",
+  "kb": 24
+ },
+ "handle-5": {
+  "label": "造型雕塑",
+  "file": "handle-5.jpg",
+  "kb": 28
+ },
+ "handle-6": {
+  "label": "實木把手",
+  "file": "handle-6.jpg",
+  "kb": 36
+ },
+ "handle-7": {
+  "label": "皮革繩把",
+  "file": "handle-7.jpg",
+  "kb": 38
+ },
+ "handle-8": {
+  "label": "標準鋁製",
+  "file": "handle-8.jpg",
+  "kb": 22
  }
 }

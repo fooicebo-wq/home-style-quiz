@@ -62,6 +62,34 @@ window.GIS_CONTENT = {
     }
    ]
   },
+  "lamp": {
+   "options": [
+    {
+     "img": "images/lamp-1.jpg"
+    },
+    {
+     "img": "images/lamp-2.jpg"
+    },
+    {
+     "img": "images/lamp-3.jpg"
+    },
+    {
+     "img": "images/lamp-4.jpg"
+    },
+    {
+     "img": "images/lamp-5.jpg"
+    },
+    {
+     "img": "images/lamp-6.jpg"
+    },
+    {
+     "img": "images/lamp-7.jpg"
+    },
+    {
+     "img": "images/lamp-8.jpg"
+    }
+   ]
+  },
   "vase": {
    "options": [
     {
@@ -87,6 +115,90 @@ window.GIS_CONTENT = {
     },
     {
      "img": "images/vase-8.jpg"
+    }
+   ]
+  },
+  "cup": {
+   "options": [
+    {
+     "img": "images/cup-1.jpg"
+    },
+    {
+     "img": "images/cup-2.jpg"
+    },
+    {
+     "img": "images/cup-3.jpg"
+    },
+    {
+     "img": "images/cup-4.jpg"
+    },
+    {
+     "img": "images/cup-5.jpg"
+    },
+    {
+     "img": "images/cup-6.jpg"
+    },
+    {
+     "img": "images/cup-7.jpg"
+    },
+    {
+     "img": "images/cup-8.jpg"
+    }
+   ]
+  },
+  "view": {
+   "options": [
+    {
+     "img": "images/view-1.jpg"
+    },
+    {
+     "img": "images/view-2.jpg"
+    },
+    {
+     "img": "images/view-3.jpg"
+    },
+    {
+     "img": "images/view-4.jpg"
+    },
+    {
+     "img": "images/view-5.jpg"
+    },
+    {
+     "img": "images/view-6.jpg"
+    },
+    {
+     "img": "images/view-7.jpg"
+    },
+    {
+     "img": "images/view-8.jpg"
+    }
+   ]
+  },
+  "handle": {
+   "options": [
+    {
+     "img": "images/handle-1.jpg"
+    },
+    {
+     "img": "images/handle-2.jpg"
+    },
+    {
+     "img": "images/handle-3.jpg"
+    },
+    {
+     "img": "images/handle-4.jpg"
+    },
+    {
+     "img": "images/handle-5.jpg"
+    },
+    {
+     "img": "images/handle-6.jpg"
+    },
+    {
+     "img": "images/handle-7.jpg"
+    },
+    {
+     "img": "images/handle-8.jpg"
     }
    ]
   }
