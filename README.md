@@ -165,5 +165,6 @@ python -m http.server 5211 --directory "E:/★★★Claude 資料總存區/居�
 
 - **色票題不能換照片**（它本來就是色塊，不是圖）
 - 草稿存在「你這台電腦的這個瀏覽器」裡。換電腦要用後台的 **匯入** 把 `content.js` 讀回來接著編
-- 照片存在 `content.js` 裡（base64），64 張全換約 1～1.5MB。想更輕可以改成放圖片網址：
-  把 `content.js` 裡的 `"img": "data:image/jpeg;base64,..."` 換成 `"img": "images/xxx.jpg"`
+- 目前的 24 張照片是**實體檔放在 `images/`**，`content.js` 只存路徑（不到 2KB），
+  瀏覽器可以延遲載入也能快取。從後台上傳的圖則會存成 base64 內嵌在 `content.js` 裡——
+  兩種寫法都支援，混用也沒問題，但整批換的時候放實體檔比較輕
