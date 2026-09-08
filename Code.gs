@@ -58,7 +58,28 @@ function doPost(e) {
 }
 
 // 瀏覽器直接開這個網址時，回一句話方便你確認有沒有部署成功
-function doGet() {
+// 加上 ?check=gis2026 可以看目前收了幾筆（刻意不回傳任何個資）
+function doGet(e) {
+  const q = (e && e.parameter) || {};
+  if (q.check === 'gis2026') {
+    try {
+      const sh = getSheet_();
+      const last = sh.getLastRow();
+      const rows = Math.max(0, last - 1);
+      let lastSid = '', leads = 0;
+      if (rows > 0) {
+        lastSid = String(sh.getRange(last, 11).getValue() || '');
+        const st = sh.getRange(2, 12, rows, 1).getValues();
+        leads = st.filter(r => String(r[0]).trim() !== '').length;
+      }
+      return ContentService.createTextOutput(JSON.stringify({
+        ok: true, 總筆數: rows, 有留聯絡方式: leads, 最後一筆sid: lastSid
+      })).setMimeType(ContentService.MimeType.JSON);
+    } catch (err) {
+      return ContentService.createTextOutput(JSON.stringify({ ok: false, err: String(err) }))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+  }
   return ContentService.createTextOutput('集思居家風格測驗後端運作中');
 }
 

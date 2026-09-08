@@ -13,6 +13,20 @@
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:"Noto Sans TC",-apple-system,"Microsoft JhengHei",sans-serif;background:var(--bg);color:var(--ink);font-size:18px;line-height:1.7;padding-bottom:80px}
 
+/* ---------- 密碼閘門 ---------- */
+body.locked{overflow:hidden}
+body.locked > *:not(#gate){display:none !important}
+#gate{position:fixed;inset:0;z-index:9999;background:#1E201C;display:flex;align-items:center;justify-content:center;padding:24px}
+#gate .box{width:100%;max-width:440px;background:#fff;border-radius:14px;padding:38px 34px;text-align:center;box-shadow:0 30px 70px -30px rgba(0,0,0,.7)}
+#gate h1{font-size:25px;font-weight:700;letter-spacing:.03em}
+#gate .sub{font-size:16px;color:var(--muted);margin:12px 0 26px;line-height:1.8}
+#gate input{width:100%;font-family:inherit;font-size:26px;letter-spacing:.3em;text-align:center;padding:16px;border:2px solid var(--line);border-radius:10px;background:#FCFBF8;color:var(--ink)}
+#gate input:focus{outline:none;border-color:var(--gold);background:#fff}
+#gate button{width:100%;margin-top:18px;font-family:inherit;font-size:19px;font-weight:500;padding:16px;border-radius:10px;border:none;background:var(--gold);color:#fff;cursor:pointer;letter-spacing:.08em}
+#gate button:active{transform:scale(.99)}
+#gate .err{color:var(--warn);font-size:16px;margin-top:16px;min-height:24px}
+#gate .note{font-size:14px;color:var(--muted);margin-top:22px;line-height:1.8}
+
 /* ---------- 頂部工具列 ---------- */
 .bar{position:sticky;top:0;z-index:50;background:#1E201C;color:#F1EFE9;padding:14px 20px;box-shadow:0 4px 18px -8px rgba(0,0,0,.5)}
 .bar .row{max-width:1180px;margin:0 auto;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
@@ -97,7 +111,69 @@ input[type=text]:focus{outline:none;border-color:var(--gold);background:#fff}
 }
 </style>
 </head>
-<body>
+<body class="locked">
+
+<div id="gate">
+  <div class="box">
+    <h1>居家風格測驗 · 後台</h1>
+    <div class="sub">這裡會改到線上測驗的內容，<br>請輸入密碼再進入。</div>
+    <input type="password" id="gate-pw" inputmode="numeric" autocomplete="current-password"
+           placeholder="密碼" aria-label="密碼">
+    <button id="gate-go">進入</button>
+    <div class="err" id="gate-err"></div>
+    <div class="note">只是防止不小心點進來改壞東西。<br>就算改了，也要在電腦上 <code>git push</code> 才會影響線上。</div>
+  </div>
+</div>
+
+<script>
+/* ---------- 密碼閘門 ----------
+   密碼以 SHA-256 雜湊存放，原始碼裡看不到明文。
+   這不是加密，懂開發者工具的人可以繞過——目的是防止誤點誤改，不是防駭客。
+   要改密碼：把新密碼的 SHA-256 值換掉下面那一行。                       */
+(function(){
+  const HASH = 'cf831b376042fe53d65c05712f689c3869806fc4621cda346a21c63c04bbfd17';
+  const KEY  = 'gisQuizAdminOK';
+  const gate = document.getElementById('gate');
+  const pw   = document.getElementById('gate-pw');
+  const err  = document.getElementById('gate-err');
+
+  function unlock(){
+    document.body.classList.remove('locked');
+    gate.remove();
+  }
+  // 同一個分頁工作階段內只問一次，重新整理不用再打
+  try { if(sessionStorage.getItem(KEY) === '1'){ unlock(); return; } } catch(e){}
+
+  async function sha256(s){
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s));
+    return [...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,'0')).join('');
+  }
+
+  async function check(){
+    const v = pw.value.trim();
+    if(!v){ pw.focus(); return; }
+    if(!(window.crypto && crypto.subtle)){
+      err.textContent = '這個瀏覽器環境不支援驗證，請用 https 開啟（不要用 file:// 直接開檔案）';
+      return;
+    }
+    try{
+      if(await sha256(v) === HASH){
+        try { sessionStorage.setItem(KEY, '1'); } catch(e){}
+        unlock();
+      }else{
+        err.textContent = '密碼錯誤，請再試一次';
+        pw.value = ''; pw.focus();
+      }
+    }catch(e){
+      err.textContent = '驗證失敗：' + e.message;
+    }
+  }
+
+  document.getElementById('gate-go').onclick = check;
+  pw.addEventListener('keydown', e => { if(e.key === 'Enter') check(); });
+  window.addEventListener('load', ()=> pw.focus());
+})();
+</script>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
 <clipPath id="win"><rect x="18" y="14" width="84" height="92" rx="2"/></clipPath>
