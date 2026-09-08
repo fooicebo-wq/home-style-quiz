@@ -340,7 +340,8 @@ function applyContent(c){
   if(c.archetypes) ARCH.forEach(a=>{
     const o = c.archetypes[a.no];
     if(!o) return;
-    ['zh','en','tag','desc','mat','dir'].forEach(k=>{ if(o[k]) a[k] = o[k]; });
+    // room = 結果卡的客廳圖，沒指定時自動用 images/room/arch-<編號>.jpg
+    ['zh','en','tag','desc','mat','dir','room'].forEach(k=>{ if(o[k]) a[k] = o[k]; });
     ['traits','kw'].forEach(k=>{
       if(!Array.isArray(o[k])) return;
       o[k].forEach((v,i)=>{ if(v) a[k][i] = v; });

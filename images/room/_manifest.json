@@ -1,0 +1,98 @@
+{
+ "arch-1": {
+  "no": 1,
+  "zh": "靜白留白派",
+  "slug": "quiet-canvas",
+  "kb": 46
+ },
+ "arch-2": {
+  "no": 2,
+  "zh": "侘寂原生派",
+  "slug": "wabi-native",
+  "kb": 97
+ },
+ "arch-3": {
+  "no": 3,
+  "zh": "暖巢安居派",
+  "slug": "warm-nest",
+  "kb": 95
+ },
+ "arch-4": {
+  "no": 4,
+  "zh": "木作職人派",
+  "slug": "wood-artisan",
+  "kb": 146
+ },
+ "arch-5": {
+  "no": 5,
+  "zh": "精工細節派",
+  "slug": "precision-craft",
+  "kb": 74
+ },
+ "arch-6": {
+  "no": 6,
+  "zh": "老件收藏派",
+  "slug": "heritage-keeper",
+  "kb": 130
+ },
+ "arch-7": {
+  "no": 7,
+  "zh": "飯店規格派",
+  "slug": "hotel-standard",
+  "kb": 100
+ },
+ "arch-8": {
+  "no": 8,
+  "zh": "低調奢華派",
+  "slug": "quiet-luxe",
+  "kb": 83
+ },
+ "arch-9": {
+  "no": 9,
+  "zh": "宴客主人派",
+  "slug": "grand-host",
+  "kb": 93
+ },
+ "arch-10": {
+  "no": 10,
+  "zh": "長桌慢食派",
+  "slug": "slow-table",
+  "kb": 99
+ },
+ "arch-11": {
+  "no": 11,
+  "zh": "個性主張派",
+  "slug": "bold-statement",
+  "kb": 134
+ },
+ "arch-12": {
+  "no": 12,
+  "zh": "藝廊居住派",
+  "slug": "gallery-living",
+  "kb": 54
+ },
+ "arch-13": {
+  "no": 13,
+  "zh": "綠意療癒派",
+  "slug": "green-healer",
+  "kb": 142
+ },
+ "arch-14": {
+  "no": 14,
+  "zh": "隨性生活派",
+  "slug": "easy-living",
+  "kb": 96
+ },
+ "arch-15": {
+  "no": 15,
+  "zh": "高效機能派",
+  "slug": "smart-function",
+  "kb": 63
+ },
+ "arch-16": {
+  "no": 16,
+  "zh": "童心繽紛派",
+  "slug": "playful-color",
+  "kb": 72
+ }
+}
