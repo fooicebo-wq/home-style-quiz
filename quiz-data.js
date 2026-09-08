@@ -15,7 +15,7 @@ const CONFIG = {
 
   // ▼ 測驗紀錄與名單收集（Code.gs 部署後把網址貼進來）
   //   留空＝完全不記錄，測驗照常運作
-  gasUrl:  ""
+  gasUrl:  "https://script.google.com/macros/s/AKfycbxo42EJgQYNspipHgQ4ZECQuxl8rXmWLvQojBUVup7Og4sVcRLJjrOt8POsEArDuMIJZw/exec"
 };
 
 /* ---------- 共用繪圖工具（預設插圖，沒放照片時就用這個） ---------- */

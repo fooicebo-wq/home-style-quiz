@@ -5,7 +5,7 @@
 
 // 留空的話，第一次有人測完會自動幫你開一個新的試算表，並把網址寄到你信箱。
 // 想指定既有試算表，就把 ID 填進來。
-const SHEET_ID   = '';
+const SHEET_ID   = '1dJGM5AX_ojuw9s25sePBGbv7ulEG_d9zHGZT7c0QG6o';
 const SHEET_NAME = '測驗紀錄';
 const OWNER_EMAIL = 'fooicebo@gmail.com';
 
