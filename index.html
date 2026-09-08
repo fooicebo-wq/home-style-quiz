@@ -209,6 +209,14 @@ function track(name, params){
   try{ if(window.parent !== window) window.parent.postMessage({source:'gis-quiz', event:name, params:params}, '*'); }catch(e){}
 }
 
+/* ---------- 網址參數 ----------
+   ?src=xxx    來源標籤，會寫進試算表（例如 ?src=fb、?src=ig、?src=熟客）
+   ?nolead=1   不顯示「留聯絡方式」表單（給熟客／群組用，他們的資料你已經有了）
+   兩個可以合用：?src=熟客&nolead=1                                        */
+const QP = new URLSearchParams(location.search);
+const SRC = (QP.get('src') || '').slice(0, 40);
+const NOLEAD = QP.get('nolead') === '1';
+
 /* ---------- 記錄到 Google 試算表（CONFIG.gasUrl 沒填就整段不做事） ---------- */
 // 每次作答給一個 id，測完先送一筆、留資料時再送一筆更新同一列，不會變成兩列
 let SID = '';
@@ -220,7 +228,7 @@ function report(payload){
   if(!CONFIG.gasUrl) return Promise.resolve(false);
   const body = new URLSearchParams(Object.assign({
     sid: SID,
-    ref: document.referrer || '',
+    ref: SRC || document.referrer || '',   // 有帶 ?src= 就用它，否則記來源網址
     ua:  navigator.userAgent.slice(0, 180)
   }, payload));
   // 跟住商轉介表單同一套：no-cors 送出，讀不到回應（送出失敗偵測不到）
@@ -310,7 +318,8 @@ function finish(){
 
   // 重測時把留資料區塊還原
   const box = el('lead');
-  box.hidden = !CONFIG.gasUrl;      // 沒接後端就不顯示，免得客人填了沒人收到
+  // 沒接後端就不顯示（免得客人填了沒人收到）；?nolead=1 是給熟客的乾淨版
+  box.hidden = !CONFIG.gasUrl || NOLEAD;
   box.classList.remove('done');
   if(!box.dataset.html) box.dataset.html = box.innerHTML;
   else box.innerHTML = box.dataset.html;
