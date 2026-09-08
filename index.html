@@ -98,6 +98,21 @@ body{font-family:"Noto Sans TC",-apple-system,"Microsoft JhengHei",sans-serif;ba
 .abtn.gold{background:var(--gold);border-color:var(--gold);color:#fff}
 .abtn.ghost{background:transparent;color:var(--ink)}
 .retry{display:block;margin:20px auto 0;font-family:inherit;font-size:15px;color:var(--muted);background:none;border:none;cursor:pointer;text-decoration:underline;letter-spacing:.05em}
+
+/* 留聯絡方式（引流用） */
+.lead{background:var(--paper);border:1px solid var(--gold-soft);border-radius:12px;padding:22px 20px;margin-top:22px}
+.lead h3{font-family:"Noto Serif TC",serif;font-size:18px;font-weight:600;text-align:center;line-height:1.55}
+.lead .p{font-size:14px;color:var(--muted);text-align:center;line-height:1.85;margin:9px 0 16px}
+.lead label{display:block;font-size:13px;color:var(--muted);margin:12px 0 5px;letter-spacing:.04em}
+.lead input,.lead textarea{width:100%;font-family:inherit;font-size:16px;padding:12px 13px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink)}
+.lead textarea{min-height:70px;resize:vertical;line-height:1.7}
+.lead input:focus,.lead textarea:focus{outline:none;border-color:var(--gold)}
+.lead .send{width:100%;margin-top:16px;font-family:inherit;font-size:16.5px;font-weight:500;padding:16px;border-radius:100px;border:1px solid var(--ink);background:var(--ink);color:var(--cream);letter-spacing:.06em;cursor:pointer;transition:transform .16s}
+.lead .send:active{transform:scale(.98)}
+.lead .send:disabled{opacity:.5;cursor:not-allowed}
+.lead .tiny{font-size:12px;color:var(--muted);text-align:center;margin-top:11px;line-height:1.7}
+.lead.done{text-align:center;border-color:var(--gold)}
+.lead.done .ok{font-family:"Noto Serif TC",serif;font-size:19px;font-weight:600;color:var(--gold);margin-bottom:8px}
 .toast{position:fixed;left:50%;bottom:44px;transform:translateX(-50%);background:var(--ink);color:var(--cream);padding:13px 24px;border-radius:100px;font-size:14px;opacity:0;transition:opacity .3s;pointer-events:none;z-index:50;max-width:88vw;text-align:center}
 .toast.on{opacity:1}
 .pvbar{position:fixed;top:0;left:0;right:0;background:#9A7B4F;color:#fff;font-size:13px;text-align:center;padding:7px;z-index:99;letter-spacing:.05em}
@@ -141,6 +156,19 @@ body.pv .topbar{top:32px}
         <a class="abtn line" id="lineBtn" target="_blank" rel="noopener">用 LINE 把結果傳給設計師</a>
         <a class="abtn ghost" id="siteBtn" target="_blank" rel="noopener">看看集思的作品</a>
       </div>
+
+      <div class="lead" id="lead" hidden>
+        <h3>想知道這樣的你，家該怎麼配置？</h3>
+        <div class="p">留個聯絡方式，我們會依你的居家原型，<br>整理一份適合你的空間配置與預算範圍給你。</div>
+        <label for="ld-name">怎麼稱呼你</label>
+        <input type="text" id="ld-name" autocomplete="name" placeholder="王先生／王小姐">
+        <label for="ld-contact">電話或 LINE ID</label>
+        <input type="text" id="ld-contact" autocomplete="tel" inputmode="tel" placeholder="0912-345-678">
+        <label for="ld-msg">有什麼想先問的？（可不填）</label>
+        <textarea id="ld-msg" placeholder="例如：30 坪新成屋，預算抓多少比較合理？"></textarea>
+        <button class="send" id="ld-send" onclick="sendLead()">送出</button>
+        <div class="tiny">只用來跟你聯繫，不會做其他用途。</div>
+      </div>
       <button class="retry" onclick="reset()">重新測一次</button>
     </div>
   </section>
@@ -181,11 +209,30 @@ function track(name, params){
   try{ if(window.parent !== window) window.parent.postMessage({source:'gis-quiz', event:name, params:params}, '*'); }catch(e){}
 }
 
+/* ---------- 記錄到 Google 試算表（CONFIG.gasUrl 沒填就整段不做事） ---------- */
+// 每次作答給一個 id，測完先送一筆、留資料時再送一筆更新同一列，不會變成兩列
+let SID = '';
+function newSid(){
+  SID = 'q' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+  return SID;
+}
+function report(payload){
+  if(!CONFIG.gasUrl) return Promise.resolve(false);
+  const body = new URLSearchParams(Object.assign({
+    sid: SID,
+    ref: document.referrer || '',
+    ua:  navigator.userAgent.slice(0, 180)
+  }, payload));
+  // 跟住商轉介表單同一套：no-cors 送出，讀不到回應（送出失敗偵測不到）
+  return fetch(CONFIG.gasUrl, {method:'POST', mode:'no-cors', body})
+    .then(()=>true).catch(err=>{ console.warn('記錄失敗', err); return false; });
+}
+
 let cur = 0, scores = {}, picks = [];
 const el = id => document.getElementById(id);
 function show(id){ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on')); el(id).classList.add('on'); window.scrollTo(0,0); }
 
-function start(){ cur=0; scores={}; picks=[]; track('quiz_start'); render(); show('s-quiz'); }
+function start(){ cur=0; scores={}; picks=[]; newSid(); track('quiz_start'); render(); show('s-quiz'); }
 // 封面停留時就先抓第一題的圖，按下開始不必等
 window.addEventListener('load', ()=>preload(0));
 function reset(){ track('quiz_retry'); show('s-intro'); }
@@ -257,7 +304,39 @@ function finish(){
   el('siteBtn').onclick = ()=>track('quiz_cta_site', {result:best.zh});
 
   track('quiz_complete', {result:best.zh, result_en:best.en, alt:alt.zh, path:picks.join('|')});
+
+  // 每一筆完成都記錄（匿名），留聯絡方式時會更新同一列
+  report({type:'done', result:best.zh, result_en:best.en, alt:alt.zh, path:picks.join('|')});
+
+  // 重測時把留資料區塊還原
+  const box = el('lead');
+  box.hidden = !CONFIG.gasUrl;      // 沒接後端就不顯示，免得客人填了沒人收到
+  box.classList.remove('done');
+  if(!box.dataset.html) box.dataset.html = box.innerHTML;
+  else box.innerHTML = box.dataset.html;
+
   show('s-result');
+}
+
+function sendLead(){
+  const name = el('ld-name').value.trim();
+  const contact = el('ld-contact').value.trim();
+  const msg = el('ld-msg').value.trim();
+  if(!contact){ toast('請留一個電話或 LINE ID，我們才聯絡得到你'); el('ld-contact').focus(); return; }
+
+  const btn = el('ld-send');
+  btn.disabled = true; btn.textContent = '送出中…';
+  const r = window._result;
+
+  report({type:'lead', name, contact, message:msg,
+          result:r.zh, result_en:r.en, path:picks.join('|')})
+    .then(()=>{
+      track('quiz_lead', {result:r.zh});
+      const box = el('lead');
+      box.classList.add('done');
+      box.innerHTML = '<div class="ok">收到了，謝謝你！</div>'
+        + '<div class="p">我們會依你的「'+r.zh+'」整理一份空間配置與預算範圍，<br>盡快跟你聯繫。</div>';
+    });
 }
 
 function doShare(){

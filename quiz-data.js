@@ -11,7 +11,11 @@ const CONFIG = {
   motto:   "聽 · 想 · 畫 · 做 · 陪",
   lineOA:  "%40608iofzm",            // LINE 官方帳號 ID（@ 要寫成 %40）
   website: "https://www.gisinterior.com/",
-  hashtag: "#集思居家風格測驗 #集思室內設計"
+  hashtag: "#集思居家風格測驗 #集思室內設計",
+
+  // ▼ 測驗紀錄與名單收集（Code.gs 部署後把網址貼進來）
+  //   留空＝完全不記錄，測驗照常運作
+  gasUrl:  ""
 };
 
 /* ---------- 共用繪圖工具（預設插圖，沒放照片時就用這個） ---------- */
