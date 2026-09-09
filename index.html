@@ -228,12 +228,19 @@ function newSid(){
 }
 function report(payload){
   if(!CONFIG.gasUrl) return Promise.resolve(false);
-  const body = new URLSearchParams(Object.assign({
+  const fields = Object.assign({
     sid: SID,
     ref: SRC || document.referrer || '',   // 有帶 ?src= 就用它，否則記來源網址
     ua:  navigator.userAgent.slice(0, 180)
-  }, payload));
-  // 跟住商轉介表單同一套：no-cors 送出，讀不到回應（送出失敗偵測不到）
+  }, payload);
+  // ⚠ 一定要用 FormData（multipart），不可以用 URLSearchParams。
+  // 這個 Apps Script 端點會用 HTTP 400 拒收 x-www-form-urlencoded，
+  // 而下面是 no-cors 讀不到回應，所以一旦改回去就會「靜默掉單」——
+  // 網頁顯示成功、試算表卻一筆都沒有。2026-09-10 就是這樣壞了一段時間。
+  const body = new FormData();
+  Object.keys(fields).forEach(function(k){
+    body.append(k, fields[k] == null ? '' : String(fields[k]));
+  });
   return fetch(CONFIG.gasUrl, {method:'POST', mode:'no-cors', body})
     .then(()=>true).catch(err=>{ console.warn('記錄失敗', err); return false; });
 }
