@@ -80,7 +80,50 @@ function doGet(e) {
         .setMimeType(ContentService.MimeType.JSON);
     }
   }
+  // 清掉開發測試留下的假資料。先用 dry=1 看會刪哪些，確認後才真的刪。
+  // ?clean=gis2026        → 只列出要刪的（不動資料）
+  // ?clean=gis2026&go=1   → 真的刪除
+  if (q.clean === 'gis2026') {
+    try {
+      const sh = getSheet_();
+      const last = sh.getLastRow();
+      if (last < 2) return json_({ ok: true, msg: '本來就沒有資料' });
+      const vals = sh.getRange(2, 1, last - 1, 12).getValues();
+      const isTest = r => {
+        const sid = String(r[10] || ''), name = String(r[4] || ''), ref = String(r[8] || '');
+        return /^(B\d|ASCII\d|CTRL|CUM|DBG1|abc|MINI\d|SZ\d|PY1|NEW1|V2TEST|HEADTEST|LOGCHK|TEST-|SETUP-TEST|RAW|VERIFY|ENDPOINT|FINAL|REPRO)/i.test(sid)
+            || /測試|驗證/.test(name) || /測試|驗證|curl|raw|python/i.test(ref);
+      };
+      const hits = [];
+      vals.forEach((r, i) => { if (isTest(r)) hits.push({ row: i + 2, sid: String(r[10] || ''), name: String(r[4] || '') }); });
+      if (q.go !== '1') {
+        const all = vals.map((r, i) => ({
+          列: i + 2, 判定: isTest(r) ? '測試' : '未判定',
+          時間: r[0] ? Utilities.formatDate(new Date(r[0]), 'Asia/Taipei', 'MM-dd HH:mm') : '',
+          原型: String(r[1] || ''), 稱呼: String(r[4] || ''),
+          聯絡: String(r[5] || ''), 來源: String(r[8] || ''), sid: String(r[10] || '')
+        }));
+        return json_({ ok: true, 模式: '試算（沒有刪除任何東西）', 總筆數: vals.length, 判定為測試資料: hits.length, 全部: all });
+      }
+      // &all=1 → 清空所有資料列（保留標題列）。確認過整張表都是測試資料時才用。
+      if (q.all === '1') {
+        const n = vals.length;
+        sh.deleteRows(2, n);
+        return json_({ ok: true, 模式: '已清空全部', 刪除筆數: n, 剩餘: Math.max(0, sh.getLastRow() - 1) });
+      }
+      hits.map(h => h.row).sort((a, b) => b - a).forEach(r => sh.deleteRow(r));   // 由後往前刪
+      return json_({ ok: true, 模式: '已刪除', 刪除筆數: hits.length, 剩餘: Math.max(0, sh.getLastRow() - 1) });
+    } catch (err) {
+      return json_({ ok: false, err: String(err) });
+    }
+  }
+
   return ContentService.createTextOutput('集思居家風格測驗後端運作中');
+}
+
+function json_(o) {
+  return ContentService.createTextOutput(JSON.stringify(o))
+    .setMimeType(ContentService.MimeType.JSON);
 }
 
 function getSheet_() {

@@ -219,29 +219,40 @@ const QP = new URLSearchParams(location.search);
 const SRC = (QP.get('src') || '').slice(0, 40);
 const NOLEAD = QP.get('nolead') === '1';
 
-/* ---------- 記錄到 Google 試算表（CONFIG.gasUrl 沒填就整段不做事） ---------- */
-// 每次作答給一個 id，測完先送一筆、留資料時再送一筆更新同一列，不會變成兩列
+/* ---------- 記錄：直接送進 Google 表單 ----------
+   POST 到表單的 /formResponse，Google 自動寫進試算表、自動寄通知信。
+   不需要 Apps Script、不需要授權、不會有 CORS 問題。
+   CONFIG.formUrl 沒填就整段不做事，測驗照常運作。                       */
 let SID = '';
 function newSid(){
   SID = 'q' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
   return SID;
 }
 function report(payload){
-  if(!CONFIG.gasUrl) return Promise.resolve(false);
-  const fields = Object.assign({
-    sid: SID,
-    ref: SRC || document.referrer || '',   // 有帶 ?src= 就用它，否則記來源網址
-    ua:  navigator.userAgent.slice(0, 180)
-  }, payload);
-  // ⚠ 一定要用 FormData（multipart），不可以用 URLSearchParams。
-  // 這個 Apps Script 端點會用 HTTP 400 拒收 x-www-form-urlencoded，
-  // 而下面是 no-cors 讀不到回應，所以一旦改回去就會「靜默掉單」——
-  // 網頁顯示成功、試算表卻一筆都沒有。2026-09-10 就是這樣壞了一段時間。
+  if(!CONFIG.formUrl || !CONFIG.formFields) return Promise.resolve(false);
+  const F = CONFIG.formFields;
+  const isLead = payload.type === 'lead';
+
+  // 追蹤用的欄位併成一段塞進「作答資訊」，客人看不到、你在試算表看得到
+  const info = [
+    isLead ? '【留資料】' : '【完成測驗】',
+    '另一面：' + (payload.alt || ''),
+    '來源：'   + (SRC || document.referrer || '直接進入'),
+    '作答：'   + (payload.path || ''),
+    'ID：'     + SID
+  ].join('　');
+
+  // ⚠ 用 FormData（multipart），不要改成 URLSearchParams。
+  // 下面是 no-cors 讀不到回應，一旦格式被拒就會「靜默掉單」——
+  // 網頁顯示成功、試算表卻一筆都沒有。2026-09-10 就是這樣壞了兩天。
   const body = new FormData();
-  Object.keys(fields).forEach(function(k){
-    body.append(k, fields[k] == null ? '' : String(fields[k]));
-  });
-  return fetch(CONFIG.gasUrl, {method:'POST', mode:'no-cors', body})
+  body.append(F.result,  (payload.result || '') + (payload.result_en ? '（' + payload.result_en + '）' : ''));
+  body.append(F.info,    info);
+  body.append(F.name,    payload.name || '');
+  body.append(F.contact, payload.contact || '');
+  body.append(F.message, payload.message || '');
+
+  return fetch(CONFIG.formUrl, {method:'POST', mode:'no-cors', body})
     .then(()=>true).catch(err=>{ console.warn('記錄失敗', err); return false; });
 }
 
@@ -331,7 +342,7 @@ function finish(){
   // 重測時把留資料區塊還原
   const box = el('lead');
   // 沒接後端就不顯示（免得客人填了沒人收到）；?nolead=1 是給熟客的乾淨版
-  box.hidden = !CONFIG.gasUrl || NOLEAD;
+  box.hidden = !CONFIG.formUrl || NOLEAD;
   box.classList.remove('done');
   if(!box.dataset.html) box.dataset.html = box.innerHTML;
   else box.innerHTML = box.dataset.html;

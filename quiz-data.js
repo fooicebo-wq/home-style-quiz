@@ -13,9 +13,18 @@ const CONFIG = {
   website: "https://www.gisinterior.com/",
   hashtag: "#集思居家風格測驗 #集思室內設計",
 
-  // ▼ 測驗紀錄與名單收集（Code.gs 部署後把網址貼進來）
-  //   留空＝完全不記錄，測驗照常運作
-  gasUrl:  "https://script.google.com/macros/s/AKfycbxo42EJgQYNspipHgQ4ZECQuxl8rXmWLvQojBUVup7Og4sVcRLJjrOt8POsEArDuMIJZw/exec"
+  // ▼ 測驗紀錄與名單收集：直接送進 Google 表單（自動寫入試算表、自動寄通知信）
+  //   留空＝完全不記錄，測驗照常運作、留資料表單會自動隱藏
+  //   網址是表單的 /formResponse（不是 /viewform）
+  formUrl: "https://docs.google.com/forms/d/e/1FAIpQLSfvieecvDkR51gSIErk1Vk3RWsVvMSVvZPzlC3VdqwGVzxIwg/formResponse",
+  // 表單每一題對應的欄位代號。表單題目若有增刪，這裡要跟著改。
+  formFields: {
+    name:    "entry.367162335",    // 稱呼
+    contact: "entry.761499019",    // 電話或LINE
+    message: "entry.2025510697",   // 想聊的
+    result:  "entry.242771369",    // 居家原型
+    info:    "entry.1610090806"    // 作答資訊（程式自動填）
+  }
 };
 
 /* ---------- 共用繪圖工具（預設插圖，沒放照片時就用這個） ---------- */
