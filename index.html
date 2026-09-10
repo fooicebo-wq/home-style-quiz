@@ -160,14 +160,14 @@ body.pv .topbar{top:32px}
       </div>
 
       <div class="lead" id="lead" hidden>
-        <h3>想知道這樣的你，家該怎麼配置？</h3>
-        <div class="p">留個聯絡方式，我們會依你的居家原型，<br>整理一份適合你的空間配置與預算範圍給你。</div>
+        <h3>想聊聊你的家嗎？</h3>
+        <div class="p">留個聯絡方式，我們找時間跟你聊聊<br>這個原型的特點，也聽聽你對家的想法。</div>
         <label for="ld-name">怎麼稱呼你</label>
         <input type="text" id="ld-name" autocomplete="name" placeholder="王先生／王小姐">
         <label for="ld-contact">電話或 LINE ID</label>
         <input type="text" id="ld-contact" autocomplete="tel" inputmode="tel" placeholder="0912-345-678">
         <label for="ld-msg">有什麼想先問的？（可不填）</label>
-        <textarea id="ld-msg" placeholder="例如：30 坪新成屋，預算抓多少比較合理？"></textarea>
+        <textarea id="ld-msg" placeholder="例如：我家 30 坪新成屋，這種風格好不好做？"></textarea>
         <button class="send" id="ld-send" onclick="sendLead()">送出</button>
         <div class="tiny">只用來跟你聯繫，不會做其他用途。</div>
       </div>
@@ -367,7 +367,7 @@ function sendLead(){
       const box = el('lead');
       box.classList.add('done');
       box.innerHTML = '<div class="ok">收到了，謝謝你！</div>'
-        + '<div class="p">我們會依你的「'+r.zh+'」整理一份空間配置與預算範圍，<br>盡快跟你聯繫。</div>';
+        + '<div class="p">我們會盡快跟你聯繫，<br>一起聊聊你的「'+r.zh+'」跟你理想中的家。</div>';
     });
 }
 
