@@ -1,2 +1,7 @@
 images/_review/
 images/room/_16種客廳對照表.jpg
+
+# 含金鑰的檔案一律不進版控
+*.gs
+Code.gs
+通知.gs
